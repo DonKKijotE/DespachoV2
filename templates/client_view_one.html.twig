@@ -1,0 +1,28 @@
+{% if client is null %}
+       <p>No hay cliente con esa ID :( </p>
+       {% else %}
+
+       <p>
+        <a href="{{ path('expedient_create', {'client_id': client.id}) }}"> Crear Expediente </a>
+       </p>
+
+       <p>
+        {{client.name}}
+      </p>
+
+        <p>
+        {% if client.expedients is null %}
+
+        No Hay Expedientes :(
+
+       {% else %}
+           {% for expedient in client.expedients %}
+
+           #   <a href="{{ path('expedient_view_one', {'id': expedient.id}) }}"> {{expedient.id}} </a> - {{expedient.matter}} || <a href="{{ path('invoice_create', {'expedient_id': expedient.id}) }}"> Crear Factura </a><br/>
+
+           {% endfor %}
+       {% endif %}
+          </p>
+
+
+         {% endif %}

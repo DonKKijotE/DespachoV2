@@ -1,0 +1,8 @@
+{% if expedient is null %}
+       <p>No hay expediente con esa ID :( </p>
+       {% else %}
+
+       <p>
+        {{expedient.matter}} VS {{expedient.opponent}}
+       </p>
+   {% endif %}

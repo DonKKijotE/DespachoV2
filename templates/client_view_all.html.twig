@@ -1,0 +1,9 @@
+{% if clients is null %}
+       <p>No hay clientes :( </p>
+       {% else %}
+           {% for client in clients %}
+           <p>
+             {{client.name}}
+           </p>
+           {% endfor %}
+       {% endif %}
