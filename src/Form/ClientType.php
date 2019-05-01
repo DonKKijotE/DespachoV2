@@ -4,6 +4,7 @@ namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,8 +18,8 @@ class ClientType extends AbstractType
       ->add('email')
       ->add('phone_one')
       ->add('phone_two')
-      ->add('additional_info')
-      ->add('save', SubmitType::class);
+      ->add('additional_info', TextareaType::class);
+      //->add('save', SubmitType::class);
     }
 
 

@@ -1,71 +1,20 @@
-{% extends 'base.html.twig' %}
-{% block title %} Despacho > Crear Expediente {% endblock %}
+<body>
 
-{% block body %}
+{{ form_start(form) }}
 
-<div class="container content">
-    <div class="row">
-        <div class="col-9 py-3">
-            <br/><br/><h2>Crear Factura</h2>
+{{dump(form)}}
+    {{ form_row(form.kind) }}
+    {{ form_row(form.concept) }}
+    {{ form_row(form.amount) }}
 
-            <form action="{{ path('invoice_create', {'expedient_id':expedient_id}) }}" method="post">
+    <h3>Concepts</h3>
+    <ul class="invoiceConcepts" data-prototype="{{ form_widget(form.invoiceConcepts.vars.prototype)|e('html_attr') }}">
+    {% for invoiceConcept in form.invoiceConcepts %}
+          {{ form_row(tag.name) }} <br/>
+        {% endfor %}
+    </ul>
+{{ form_end(form) }}
 
-            <div class="col-6 form-group">
-                {{ form_row(form.kind, { label:'Tipo', attr: { 'class': 'form-control', 'placeholder': 'Tipo' } }) }}
-            </div>
-
-            <div class="col-6 form-group">
-
-                {{ form_row(form.concept, { label:'Concepto', attr: { 'class': 'form-control', 'placeholder': 'Concepto' } }) }}
-
-            </div>
-
-            <div class="col-6 form-group">
-                {{ form_row(form.amount, { label:'Cantidad', attr: { 'class': 'form-control', 'placeholder': 'Cantidad' } }) }}
-            </div>
-
-            <div class="col-6 form-group invoiceConcepts" data-prototype="{{ form_widget(form.invoiceConcepts.vars.prototype)|e('html_attr') }}">
-
-
-
-
-
-            {% form_theme form _self %}
-
-              {% block _invoiceConcepts_entry_widget %}
-                  <tr>
-                      <td>{{ form_widget(form.concept) }}</td>
-                      <td>{{ form_widget(form.amount) }}</td>
-                  </tr>
-              {% endblock %}
-
-
-
-
-
-            </div>
-
-
-
-
-
-
-
-            <div class="col-lg-2 pt-3">
-                <button class="btn btn-primary" type="submit">Crear Factura</button>
-            </div>
-
-            {{ form_rest(form) }}
-
-            </form>
-
-            </div>
-            </div>
-            <!--/row-->
-            </div>
-            <!--container-->
-
-{% endblock %}
 
 {% block javascripts %}
 <script
@@ -83,14 +32,13 @@
 <script>
 
 // setup an "add a tag" link
-var $addTagLink = $('<a href="#" class="add_tag_link">Añadir Concepto</a>');
-var $newLinkLi = $('<div></div>').append($addTagLink);
+var $addTagLink = $('<a href="#" class="add_tag_link">Add a concept</a>');
+var $newLinkLi = $('<li></li>').append($addTagLink);
 
 jQuery(document).ready(function() {
-
+    // Get the ul that holds the collection of tags
    console.log("Hola");
-
-   var $collectionHolder = $('div.invoiceConcepts');
+   var $collectionHolder = $('ul.invoiceConcepts');
 
     // add the "add a tag" anchor and li to the tags ul
     $collectionHolder.append($newLinkLi);
@@ -125,7 +73,7 @@ function addTagForm($collectionHolder, $newLinkLi) {
     $collectionHolder.data('index', index + 1);
 
     // Display the form in the page in an li, before the "Add a tag" link li
-    var $newFormLi = $('<div></div>').append(newForm);
+    var $newFormLi = $('<li></li>').append(newForm);
 
     // also add a remove button, just for this example
     $newFormLi.append('<a href="#" class="remove-tag">x</a>');
@@ -150,3 +98,5 @@ function addTagForm($collectionHolder, $newLinkLi) {
 
 
 {% endblock %}
+
+</body>

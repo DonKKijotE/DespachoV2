@@ -62,7 +62,8 @@ class ExpedientController extends AbstractController
 
 
         return $this->render('expedient_create.html.twig', array(
-         'form' => $form->createView()
+         'form' => $form->createView(),
+         'client_id' => $client_id
       ));
 
       //return New Response("<body>Hola, quieres crear un expediente.</body>");

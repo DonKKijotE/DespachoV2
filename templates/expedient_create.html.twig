@@ -1,1 +1,51 @@
-{{ form(form) }}
+{% extends 'base.html.twig' %}
+{% block title %} Despacho > Crear Expediente {% endblock %}
+
+{% block body %}
+
+<div class="container content">
+    <div class="row">
+        <div class="col-9 py-3">
+            <br/><br/><h2>Crear Expediente</h2>
+
+            <form action="{{ path('expedient_create', {'client_id': client_id}) }}" method="post">
+
+            <div class="col-6 form-group">
+                {{ form_row(form.opponent, { label:'Contrario', attr: { 'class': 'form-control', 'placeholder': 'Contrario' } }) }}
+            </div>
+
+            <div class="col-6 form-group">
+
+                {{ form_row(form.matter, { label:'Asunto', attr: { 'class': 'form-control', 'placeholder': 'Asunto' } }) }}
+
+            </div>
+
+            <div class="col-6 form-group">
+                {{ form_row(form.jurisdiction, { label:'Jurisdicción', attr: { 'class': 'form-control', 'placeholder': 'Jurisdicción' } }) }}
+            </div>
+
+            <div class="col-12 form-group">
+                {{ form_row(form.comments, { label:'Comentarios', attr: { 'class': 'form-control', 'placeholder': 'Información sobre el asunto.', 'rows': '4' } }) }}
+            </div>
+
+            <div class="col-lg-2 pt-3">
+                <button class="btn btn-primary" type="submit">Crear Expediente</button>
+            </div>
+
+            {{ form_rest(form) }}
+
+            </form>
+
+
+
+
+
+
+
+            </div>
+            </div>
+            <!--/row-->
+            </div>
+            <!--container-->
+
+{% endblock %}

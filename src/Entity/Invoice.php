@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,6 +43,16 @@ class Invoice
      * @ORM\JoinColumn(nullable=false)
      */
     private $expedient;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\InvoiceConcept", mappedBy="invoice", cascade={"persist"})
+     */
+    private $invoiceConcepts;
+
+    public function __construct()
+    {
+        $this->invoiceConcepts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +115,37 @@ class Invoice
     public function setExpedient(?Expedient $expedient): self
     {
         $this->expedient = $expedient;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InvoiceConcept[]
+     */
+    public function getInvoiceConcepts(): Collection
+    {
+        return $this->invoiceConcepts;
+    }
+
+    public function addInvoiceConcept(InvoiceConcept $invoiceConcept): self
+    {
+        if (!$this->invoiceConcepts->contains($invoiceConcept)) {
+            $this->invoiceConcepts[] = $invoiceConcept;
+            $invoiceConcept->setInvoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoiceConcept(InvoiceConcept $invoiceConcept): self
+    {
+        if ($this->invoiceConcepts->contains($invoiceConcept)) {
+            $this->invoiceConcepts->removeElement($invoiceConcept);
+            // set the owning side to null (unless already changed)
+            if ($invoiceConcept->getInvoice() === $this) {
+                $invoiceConcept->setInvoice(null);
+            }
+        }
 
         return $this;
     }

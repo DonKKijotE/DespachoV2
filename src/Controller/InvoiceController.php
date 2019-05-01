@@ -15,6 +15,7 @@ use App\Form\InvoiceType;
 
 use App\Entity\Expedient;
 use App\Entity\Invoice;
+use App\Entity\InvoiceConcept;
 
 
 
@@ -29,6 +30,19 @@ class InvoiceController extends AbstractController
 
       $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
       $invoice = new Invoice();
+
+      /* $invoiceConcept1 = new InvoiceConcept();
+      $invoiceConcept1->setConcept("Informe Pascual");
+      $invoiceConcept1->setAmount("1500.00");
+      $invoice->addInvoiceConcept($invoiceConcept1);
+
+      $invoiceConcept2 = new InvoiceConcept();
+      $invoiceConcept2->setConcept("Honorarios Gregorio");
+      $invoiceConcept2->setAmount("150.00");
+      $invoice->addInvoiceConcept($invoiceConcept2); */
+
+
+
       $form = $this->createForm(InvoiceType::class, $invoice);
 
       $expedient = $this->getDoctrine()
@@ -62,7 +76,8 @@ class InvoiceController extends AbstractController
 
 
         return $this->render('invoice_create.html.twig', array(
-         'form' => $form->createView()
+         'form' => $form->createView(),
+         'expedient_id' => $expedient_id,
       ));
 
       //return New Response("<body>Hola, quieres crear un expediente.</body>");

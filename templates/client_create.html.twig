@@ -1,1 +1,59 @@
-{{ form(form) }}
+{% extends 'base.html.twig' %}
+{% block title %} Despacho > Crear Cliente {% endblock %}
+
+{% block body %}
+
+<div class="container content">
+    <div class="row">
+        <div class="col-9 py-3">
+            <br/><br/><h2>Crear Cliente</h2>
+
+            <form action="{{ path('client_create') }}" method="post">
+
+            <div class="col-6 form-group">
+                {{ form_row(form.name, { label:'Nombre Completo',attr: { 'class': 'form-control', 'placeholder': 'Nombre del cliente.' } }) }}
+            </div>
+
+            <div class="col-6 form-group">
+                {{ form_row(form.iddocument, { label:'Documento De Identidad', attr: { 'class': 'form-control', 'placeholder': 'CIF/NIF/NIE' } }) }}
+            </div>
+
+            <div class="col-6 form-group">
+                {{ form_row(form.email, { attr: { 'class': 'form-control', 'placeholder': 'usuario@servidor.com' } }) }}
+            </div>
+
+            <div class="col-6 form-group">
+
+                {{ form_row(form.phone_one, { label:'Teléfono Uno', attr: { 'class': 'form-control', 'placeholder': 'Teléfono Principal' } }) }}
+
+            </div>
+
+            <div class="col-6 form-group">
+                {{ form_row(form.phone_two, { label:'Teléfono Dos', attr: { 'class': 'form-control', 'placeholder': 'Teléfono Secundario' } }) }}
+            </div>
+
+            <div class="col-12 form-group">
+                {{ form_row(form.additional_info, { label:'Información Adicional', attr: { 'class': 'form-control', 'placeholder': 'Información adicional, dirección, etc.', 'rows': '4' } }) }}
+            </div>
+
+            <div class="col-lg-2 pt-3">
+                <button class="btn btn-primary" type="submit">Crear Cliente</button>
+            </div>
+
+            {{ form_rest(form) }}
+
+            </form>
+
+
+
+
+
+
+
+      </div>
+  </div>
+  <!--/row-->
+</div>
+<!--container-->
+
+{% endblock %}

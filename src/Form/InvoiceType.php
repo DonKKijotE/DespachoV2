@@ -4,8 +4,12 @@ namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use App\Entity\Invoice;
+
 
 class InvoiceType extends AbstractType
 {
@@ -15,8 +19,21 @@ class InvoiceType extends AbstractType
             ->add('kind')
             ->add('concept')
             ->add('amount')
-            ->add('save', SubmitType::class);
+            ->add('invoiceConcepts', CollectionType::class, [
+            'entry_type' => InvoiceConceptType::class,
+            'entry_options' => ['label' => false],
+            'label' => false,
+            'allow_add' => true,
+            'by_reference' => false,
+            'allow_delete' => true, ]);
+            //->add('save', SubmitType::class);
     }
 
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Invoice::class,
+        ]);
+    }
 
 }
