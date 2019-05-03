@@ -1,12 +1,31 @@
 {% extends 'base.html.twig' %}
 {% block title %} Despacho > Crear Expediente {% endblock %}
 
+{% form_theme form _self %}
+
+  {% block invoice_concept_widget %}
+
+
+
+          <div class="input-group">
+
+            {{ form_widget(form.concept, {attr: { 'class': 'form-control', 'placeholder': 'Concepto' } }) }}
+            {{ form_widget(form.amount, {attr: { 'class': 'form-control', 'placeholder': 'Cantidad' } }) }}
+            &nbsp;&nbsp;<a href="#" class="remove-tag">[X]</a>
+          </div><br/>
+
+
+
+  {% endblock %}
+
 {% block body %}
 
 <div class="container content">
     <div class="row">
         <div class="col-9 py-3">
-            <br/><br/><h2>Crear Factura</h2>
+            <h2>Crear Factura</h2>
+
+            <br/>
 
             <form action="{{ path('invoice_create', {'expedient_id':expedient_id}) }}" method="post">
 
@@ -24,23 +43,14 @@
                 {{ form_row(form.amount, { label:'Cantidad', attr: { 'class': 'form-control', 'placeholder': 'Cantidad' } }) }}
             </div>
 
-            <div class="col-6 form-group invoiceConcepts" data-prototype="{{ form_widget(form.invoiceConcepts.vars.prototype)|e('html_attr') }}">
+            <br>
+
+            <h3>Conceptos</h3>
+
+            <br>
 
 
-
-
-
-            {% form_theme form _self %}
-
-              {% block _invoiceConcepts_entry_widget %}
-                  <tr>
-                      <td>{{ form_widget(form.concept) }}</td>
-                      <td>{{ form_widget(form.amount) }}</td>
-                  </tr>
-              {% endblock %}
-
-
-
+            <div class="col-9 form-group invoiceConcepts" data-prototype="{{ form_widget(form.invoiceConcepts.vars.prototype)|e('html_attr') }}">
 
 
             </div>
@@ -68,22 +78,11 @@
 {% endblock %}
 
 {% block javascripts %}
-<script
-  src="https://code.jquery.com/jquery-3.4.0.js"
-  integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="
-  crossorigin="anonymous"></script>
-
-            {{ encore_entry_script_tags('app') }}
-
-            <!-- Renders app.js & a webpack runtime.js file
-                <script src="/build/runtime.js"></script>
-                <script src="/build/app.js"></script> -->
-
 
 <script>
 
 // setup an "add a tag" link
-var $addTagLink = $('<a href="#" class="add_tag_link">Añadir Concepto</a>');
+var $addTagLink = $('<br><a href="#" class="add_tag_link">Añadir Concepto</a>');
 var $newLinkLi = $('<div></div>').append($addTagLink);
 
 jQuery(document).ready(function() {
@@ -128,7 +127,7 @@ function addTagForm($collectionHolder, $newLinkLi) {
     var $newFormLi = $('<div></div>').append(newForm);
 
     // also add a remove button, just for this example
-    $newFormLi.append('<a href="#" class="remove-tag">x</a>');
+    //$newFormLi.append('<a href="#" class="remove-tag">x</a>');
 
     $newLinkLi.before($newFormLi);
 

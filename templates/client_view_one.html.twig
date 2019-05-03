@@ -1,28 +1,80 @@
-{% if client is null %}
-       <p>No hay cliente con esa ID :( </p>
-       {% else %}
 
-       <p>
-        <a href="{{ path('expedient_create', {'client_id': client.id}) }}"> Crear Expediente </a>
-       </p>
+{# templates/client_view_one.html.twig #}
+{% extends 'base.html.twig' %}
 
-       <p>
-        {{client.name}}
-      </p>
+{% block title %}Despacho > {{client.name}} {% endblock %}
+
+{% block stylesheets %}
+ <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+{% endblock %}
+
+
+
+{% block body %}
+
+
+
+<div class="container content">
+    <div class="row">
+        <div class="col-6 py-3">
+            <h2>{{client.name}}</h2>
+            <p>{{client.name}} <br>
+              {{client.iddocument}} <br>
+              {{client.email}}<br>
+              {{client.phoneone}} <br>
+              {{client.phonetwo}}<br>
+
+            </p>
+
+            <h3>Información Adicional</h2>
+            <p>
+              {{client.additionalinfo}}
+            </p>
+
+
+
+        </div>
+
+        <div class="col-6 py-3">
+
+        <h3>Expedientes Asociados</h2>
+
+        <p>
+         <a href="{{ path('expedient_create', {'client_id': client.id}) }}"> Crear Expediente </a>
+        </p>
+
 
         <p>
         {% if client.expedients is null %}
 
-        No Hay Expedientes :(
+        <p>No Hay Expedientes :(</p>
 
        {% else %}
            {% for expedient in client.expedients %}
 
-           #   <a href="{{ path('expedient_view_one', {'id': expedient.id}) }}"> {{expedient.id}} </a> - {{expedient.matter}} || <a href="{{ path('invoice_create', {'expedient_id': expedient.id}) }}"> Crear Factura </a><br/>
+            {{expedient.created|date('d/m/Y')}} - <a href="{{ path('expedient_view_one', {'id': expedient.id}) }}"> {{expedient.matter}} </a> <br/>
 
            {% endfor %}
        {% endif %}
-          </p>
+
+         </p>
 
 
-         {% endif %}
+
+        </div>
+
+    </div>
+    <!--/row-->
+
+
+</div>
+<!--container-->
+
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

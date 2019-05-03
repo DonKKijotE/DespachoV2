@@ -1,8 +1,78 @@
-{% if expedient is null %}
-       <p>No hay expediente con esa ID :( </p>
-       {% else %}
 
-       <p>
-        {{expedient.matter}} VS {{expedient.opponent}}
-       </p>
-   {% endif %}
+{# templates/expedient_view_one.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Despacho > {{expedient.matter}} {% endblock %}
+
+{% block stylesheets %}
+ <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+{% endblock %}
+
+
+
+{% block body %}
+
+
+
+<div class="container content">
+    <div class="row">
+        <div class="col-6 py-3">
+            <h2>{{expedient.client.name}} - {{expedient.matter}}</h2>
+            <p>Contrario: {{expedient.opponent}} <br>
+            Jurisdicción: {{expedient.jurisdiction}} <br>
+            Creado:  {{expedient.created|date('d/m/Y')}}
+
+            </p>
+
+            <h3>Información Adicional</h2>
+            <p>
+              {{expedient.comments}}
+            </p>
+
+
+
+        </div>
+
+        <div class="col-6 py-3">
+
+        <h3>Facturas Asociadas</h2>
+
+        <p>
+         <a href="{{ path('invoice_create', {'expedient_id': expedient.id}) }}"> Crear Factura </a>
+        </p>
+
+
+        <p>
+        {% if expedient.invoices is null %}
+
+        No Hay Facturas :(
+
+       {% else %}
+           {% for invoice in expedient.invoices|sort|reverse %}
+
+          {{invoice.created|date('d/m/Y')}} - {{invoice.amount}}€ <br/>
+
+           {% endfor %}
+       {% endif %}
+
+         </p>
+
+
+
+        </div>
+
+    </div>
+    <!--/row-->
+
+
+</div>
+<!--container-->
+
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

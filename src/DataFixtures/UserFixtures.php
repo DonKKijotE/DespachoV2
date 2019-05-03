@@ -32,5 +32,19 @@ class UserFixtures extends Fixture
         $manager->persist($user);
 
         $manager->flush();
+
+        $user = new User();
+        $user->setEmail("javi_lanzarote@hotmail.com");
+        $roles = array('ROLE_USER');
+        $user->setRoles($roles);
+        $user->setPassword($this->passwordEncoder->encodePassword(
+             $user,
+             '123456'
+         ));
+        $user->setWorkgroup("GROUP_JAVI");
+
+        $manager->persist($user);
+
+        $manager->flush();
     }
 }

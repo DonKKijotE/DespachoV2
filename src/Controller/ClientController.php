@@ -60,7 +60,7 @@ class ClientController extends AbstractController
               ->getRepository(Client::class)
               ->findBy(
                       ['workgroup' => $user_workgroup],
-                      ['name' => 'ASC']
+                      ['created' => 'DESC']
                       );
            if (!$clients) {
               $clients = NULL;

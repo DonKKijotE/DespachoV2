@@ -49,9 +49,15 @@ class Invoice
      */
     private $invoiceConcepts;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
     public function __construct()
     {
         $this->invoiceConcepts = new ArrayCollection();
+        $this->setCreated(new \DateTime('now'));;
     }
 
     public function getId(): ?int
@@ -146,6 +152,18 @@ class Invoice
                 $invoiceConcept->setInvoice(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreated(): ?\DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    public function setCreated(\DateTimeInterface $created): self
+    {
+        $this->created = $created;
 
         return $this;
     }
