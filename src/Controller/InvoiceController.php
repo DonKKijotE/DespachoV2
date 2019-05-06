@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Knp\Snappy\Pdf;
 
 
 use App\Form\InvoiceType;
@@ -58,6 +59,11 @@ class InvoiceController extends AbstractController
       if ($form->isSubmitted() && $form->isValid()) {
          $invoice = $form->getData();
          $workgroup = $this->getUser()->getWorkgroup();
+         $year = date("Y");
+         $code = $this->getDoctrine()
+            ->getRepository(Invoice::class)
+            ->assignCode($year,$workgroup);
+         $invoice->setCode($code);
          $invoice->setWorkgroup($workgroup);
          $invoice->setExpedient($expedient);
          $em = $this->getDoctrine()->getManager();
@@ -82,6 +88,66 @@ class InvoiceController extends AbstractController
 
       //return New Response("<body>Hola, quieres crear un expediente.</body>");
     }
+
+    /**
+    * @Route("/invoice/view/all", name="invoice_view_all")
+    */
+    public function invoiceViewAll()
+    {
+       $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+       $user_workgroup = $this->getUser()->getWorkgroup();
+       $invoices = $this->getDoctrine()
+            ->getRepository(Invoice::class)
+            ->findBy(
+                      ['workgroup' => $user_workgroup],
+                      ['created' => 'DESC']
+                  );
+
+         if (!$invoices) {
+            $invoices = NULL;
+         }
+         return $this->render('invoice_view_all.html.twig', array(
+            'invoices' => $invoices
+         ));
+    }
+
+    /**
+      * @Route("/invoice-generate/{id}", name="invoice_generate", requirements={"id"="\d+"})
+      */
+      public function invoiceGenerate(Pdf $snappy,  int $id)
+      {
+        $invoice = $this->getDoctrine()
+           ->getRepository(Invoice::class)
+           ->find($id);
+
+        if (!$invoice) {
+           $invoice = NULL;
+        }
+        //$emisor = $this->getUser()->getWorkgroup();
+        $emisor = $invoice->getWorkgroup();
+        
+        if ($emisor == "GROUP_JAVI")
+        {
+        $html = $this->renderView('invoice_javi.html.twig', array(
+           'invoice' => $invoice
+        ));
+        }
+        elseif ($emisor == "GRUPO_DP") {
+          $html = $this->renderView('invoice_dp.html.twig', array(
+             'invoice' => $invoice
+          ));
+        }
+    $filename = 'Factura - '. $invoice->getId();
+        return new Response(
+          $snappy->getOutputFromHtml($html),200,array(
+              'images' => true,
+             'Content-Type'          => 'application/pdf',
+             'Encoding' => 'utf-8',
+             'Content-Disposition'   => 'attachment; filename="'.$filename.'.pdf"'
+           )
+         );
+      // return $this->render('consentimiento.html.twig');
+      }
 
 
 

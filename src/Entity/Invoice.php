@@ -54,6 +54,11 @@ class Invoice
      */
     private $created;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $code;
+
     public function __construct()
     {
         $this->invoiceConcepts = new ArrayCollection();
@@ -164,6 +169,18 @@ class Invoice
     public function setCreated(\DateTimeInterface $created): self
     {
         $this->created = $created;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

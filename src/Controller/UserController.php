@@ -20,7 +20,9 @@ class UserController extends AbstractController
       //return New Response('<html><head><body>Hola!</body></head></html>');
       $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-      return New Response("<body>Hola, estás autentificado :)</body>");
+      return $this->render('home.html.twig');
+
+      //return New Response("<body>Hola, estás autentificado :)</body>");
     }
 
     /**

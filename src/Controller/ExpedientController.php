@@ -46,6 +46,12 @@ class ExpedientController extends AbstractController
          $workgroup = $this->getUser()->getWorkgroup();
          $expedient->setWorkgroup($workgroup);
          $expedient->setClient($client);
+         $jurisdiction = $expedient->getJurisdiction();
+         $year = date("Y");
+         $code = $this->getDoctrine()
+            ->getRepository(Expedient::class)
+            ->assignCode($year,$jurisdiction,$workgroup);
+         $expedient->setCode($code);
          $em = $this->getDoctrine()->getManager();
          $em->persist($expedient);
          $em->flush();
@@ -67,6 +73,28 @@ class ExpedientController extends AbstractController
       ));
 
       //return New Response("<body>Hola, quieres crear un expediente.</body>");
+    }
+
+    /**
+    * @Route("/expedient/view/all", name="expedient_view_all")
+    */
+    public function expedientViewAll()
+    {
+       $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+       $user_workgroup = $this->getUser()->getWorkgroup();
+       $expedients = $this->getDoctrine()
+            ->getRepository(Expedient::class)
+            ->findBy(
+                      ['workgroup' => $user_workgroup],
+                      ['created' => 'DESC']
+                  );
+
+         if (!$expedients) {
+            $expedients = NULL;
+         }
+         return $this->render('expedient_view_all.html.twig', array(
+            'expedients' => $expedients
+         ));
     }
 
     /**
